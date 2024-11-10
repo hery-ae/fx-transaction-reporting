@@ -1,0 +1,11 @@
+[project]
+name = "fx-transaction-reporting"
+version = "1.0.0"
+description = ""
+dependencies = [
+    "flask",
+    "SQLAlchemy",
+    "requests",
+    "pyjwt",
+    "redis"
+]
