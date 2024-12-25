@@ -47,6 +47,6 @@ Base.save = save
 Base.delete = remove
 
 def init_db():
-    from .models.interbank_deal import InterbankDeal
+    from .models.report import Report
 
     Base.metadata.create_all(bind=engine)

@@ -1,6 +1,6 @@
 import os
 from flask import Flask
-from .blueprints import index, report, authorize
+from .blueprints import index, post, authorize
 from .database import init_db
 
 app = Flask(__name__)
@@ -9,7 +9,9 @@ app.config['SECRET_KEY'] = os.urandom(8).hex()
 
 app.config.from_prefixed_env()
 
-app.config['CLIENT_TOKEN_URL'] = app.config.get('CLIENT_TOKEN_URL') or 'http://localhost:8080/reports/token'
+app.config['CLIENT_AUTH_URL'] = app.config.get('CLIENT_AUTH_URL') or 'http://localhost:8080/nop/token.json'
+
+app.config['CLIENT_TOKEN_URL'] = app.config.get('CLIENT_TOKEN_URL') or 'http://localhost:8080/reports/token.json'
 app.config['CLIENT_ID'] = app.config.get('CLIENT_ID') or '1'
 app.config['CLIENT_SECRET'] = app.config.get('CLIENT_SECRET') or 'secret'
 app.config['CLIENT_SCOPE'] = app.config.get('CLIENT_SECRET') or 'scope'

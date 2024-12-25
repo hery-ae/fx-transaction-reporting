@@ -1,10 +1,11 @@
 from sqlalchemy import Column, Integer, String, Numeric, DateTime, func
 from ..database import Base
 
-class Adjustment(Base):
+class Report(Base):
     __tablename__ = 'reports'
 
-    transaction_id = Column(String(11), primary_key=True)
+    id = Column(Integer, primary_key=True)
+    transaction_id = Column(String(11), nullable=False, unique=True)
     user_id = Column(Integer, nullable=False)
     transaction_date = Column(String(15), nullable=False)
     corporate_id = Column(Integer, nullable=False)
@@ -33,6 +34,8 @@ class Adjustment(Base):
 
     def __init__(
         self,
+        id=None,
+        user_id=None,
         transaction_id=None,
         transaction_date=None,
         corporate_id=None,
@@ -57,6 +60,8 @@ class Adjustment(Base):
         status_code=None,
         status_text=None
     ):
+        self.id = id
+        self.user_id = user_id
         self.transaction_id = transaction_id
         self.transaction_date = transaction_date
         self.corporate_id = corporate_id

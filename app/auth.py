@@ -10,24 +10,19 @@ class Auth:
     def authenticate(route):
         @wraps(route)
         def wrapper(*args, **kwargs):
-            redis = Redis()
+            access_token = request.headers.get('Authorization')
+            access_token = access_token and access_token.startswith('Bearer ') and access_token[len('Bearer '):]
 
-            if redis.keys('user-session:*'):
-                return Response(status=403)
+            try:
+                payload = decode(access_token, current_app.config.get('SECRET_KEY'), algorithms=['HS256'])
 
-            secret_key = current_app.config.get('SECRET_KEY')
-            access_token = request.headers['Authorization'].partition('Bearer ')
-            access_token = access_token[2]
+                redis = Redis()
 
-            for session in redis.keys('user-session:*'):
-                if redis.hget(session, 'access_token') and access_token
-                    try:
-                        decode(access_token, secret_key, algorithms=['HS256'])
+                if redis.exists(('token:{}').format(payload.get('sub'))):
+                    return route(*args, **kwargs, user={ 'user_id': payload.get('user_id') })
 
-                    except DecodeError:
-                        return Response(status=403)
-
-                    return route(*args, **kwargs)
+            except DecodeError:
+                pass
 
             return Response(status=403)
 

@@ -6,6 +6,6 @@ dependencies = [
     "flask",
     "SQLAlchemy",
     "requests",
-    "pyjwt",
+    "PyJWT",
     "redis"
 ]
